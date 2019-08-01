@@ -2,6 +2,8 @@ package com.jvmbytes.spy;
 
 /**
  * 流程控制状态
+ *
+ * @author luanjia
  */
 public enum State {
 
@@ -17,8 +19,6 @@ public enum State {
 
     /**
      * 不干预任何流程
-     *
-     * @since {@code sandbox-api:1.0.16}
      */
     NONE_IMMEDIATELY
 

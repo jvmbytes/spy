@@ -72,7 +72,6 @@ public class BeforeEvent extends InvokeEvent {
      * @param index       方法入参编号(从0开始)
      * @param changeValue 改变的值
      * @return this
-     * @since {@code sandbox-api:1.0.10}
      */
     public BeforeEvent changeParameter(final int index,
                                        final Object changeValue) {

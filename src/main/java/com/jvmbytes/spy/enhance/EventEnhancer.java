@@ -57,7 +57,7 @@ public class EventEnhancer implements Enhancer {
 
     private static final boolean isDumpClass = false;
 
-    /*
+    /**
      * dump class to file
      * 用于代码调试
      */
@@ -65,7 +65,7 @@ public class EventEnhancer implements Enhancer {
         if (!isDumpClass) {
             return data;
         }
-        final File dumpClassFile = new File("./sandbox-class-dump/" + className + ".class");
+        final File dumpClassFile = new File("./spy-class-dump/" + className + ".class");
         final File classPath = new File(dumpClassFile.getParent());
 
         // 创建类所在的包路径

@@ -13,7 +13,7 @@ public interface EventListener {
     /**
      * 触发事件处理
      * <p>
-     * 事件处理是整个sandbox最重要的一环,也是整个系统设计的精髓所在
+     * 事件处理是最重要的一环,也是整个系统设计的精髓所在
      * </p>
      * <pre>
      * {@code

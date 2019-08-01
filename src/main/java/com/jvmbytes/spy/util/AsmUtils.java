@@ -2,8 +2,9 @@ package com.jvmbytes.spy.util;
 
 import com.jvmbytes.commons.structure.ClassStructure;
 import com.jvmbytes.commons.structure.ClassStructureFactory;
-import org.apache.commons.io.IOUtils;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 
 import static com.jvmbytes.commons.utils.ClassUtils.toInternalClassName;
@@ -15,6 +16,16 @@ import static com.jvmbytes.commons.utils.ClassUtils.toInternalClassName;
  * @author luanjia
  */
 public class AsmUtils {
+
+    public static void closeQuietly(final Closeable closeable) {
+        try {
+            if (closeable != null) {
+                closeable.close();
+            }
+        } catch (final IOException ioe) {
+            // ignore
+        }
+    }
 
     /**
      * just the same
@@ -57,8 +68,8 @@ public class AsmUtils {
             } while (!classStructureOfType2.getFamilyTypeClassStructures().contains(classStructure));
             return toInternalClassName(classStructure.getJavaClassName());
         } finally {
-            IOUtils.closeQuietly(inputStreamOfType1);
-            IOUtils.closeQuietly(inputStreamOfType2);
+            closeQuietly(inputStreamOfType1);
+            closeQuietly(inputStreamOfType2);
         }
     }
 

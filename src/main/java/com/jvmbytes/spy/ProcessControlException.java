@@ -9,10 +9,14 @@ package com.jvmbytes.spy;
  */
 public final class ProcessControlException extends Exception {
 
-    // 流程控制状态
+    /**
+     * 流程控制状态
+     */
     private final State state;
 
-    // 回应结果对象(直接返回或者抛出异常)
+    /**
+     * 回应结果对象(直接返回或者抛出异常)
+     */
     private final Object respond;
 
     private final boolean isIgnoreProcessEvent;
@@ -21,9 +25,6 @@ public final class ProcessControlException extends Exception {
         this(false, state, respond);
     }
 
-    /**
-     * @since {@code sandbox-api:1.0.16}
-     */
     ProcessControlException(boolean isIgnoreProcessEvent, State state, Object respond) {
         this.isIgnoreProcessEvent = isIgnoreProcessEvent;
         this.state = state;
@@ -54,7 +55,6 @@ public final class ProcessControlException extends Exception {
      * 判断是否需要主动忽略处理后续所有事件流
      *
      * @return 是否需要主动忽略处理后续所有事件流
-     * @since {@code sandbox-api:1.0.16}
      */
     public boolean isIgnoreProcessEvent() {
         return isIgnoreProcessEvent;
