@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author wongoo
  */
 public final class SpyInjector {
-    private static final Logger logger = LoggerFactory.getLogger("spy-injector");
+    private static final Logger logger = LoggerFactory.getLogger(SpyInjector.class);
 
     private static Instrumentation inst;
 
@@ -57,7 +57,7 @@ public final class SpyInjector {
 
         EventListenerHandlers.getSingleton().active(transformer.getListenerId(), listener, types);
 
-        inst.addTransformer(transformer);
+        inst.addTransformer(transformer, true);
 
         retransform(matcher);
 

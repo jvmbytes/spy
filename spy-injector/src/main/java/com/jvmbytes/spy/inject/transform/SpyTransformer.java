@@ -20,9 +20,9 @@ import java.security.ProtectionDomain;
  */
 public class SpyTransformer implements ClassFileTransformer {
 
-    private static final Logger logger = LoggerFactory.getLogger("spy-transformer");
+    private static final Logger logger = LoggerFactory.getLogger(SpyTransformer.class);
 
-    EventEnhancer enhancer = new EventEnhancer();
+    private EventEnhancer enhancer = new EventEnhancer();
 
     private int listenerId = ObjectIDs.instance.identity(SpyTransformer.class);
 
@@ -56,6 +56,10 @@ public class SpyTransformer implements ClassFileTransformer {
                             ProtectionDomain protectionDomain,
                             byte[] classfileBuffer) throws IllegalClassFormatException {
         try {
+            if (className.startsWith("com/jvmbytes/")) {
+                return null;
+            }
+
             ClassStructure classStructure = null == classBeingRedefined
                     ? ClassStructureFactory.createClassStructure(classfileBuffer, loader)
                     : ClassStructureFactory.createClassStructure(classBeingRedefined);
@@ -66,12 +70,18 @@ public class SpyTransformer implements ClassFileTransformer {
                 return null;
             }
 
-            return enhancer.toByteCodeArray(loader,
+            final byte[] toByteCodeArray = enhancer.toByteCodeArray(loader,
                     classfileBuffer,
                     matchingResult.getBehaviorSignCodes(),
                     namespace,
                     listenerId,
                     eventTypes);
+
+            if (toByteCodeArray == classfileBuffer) {
+                return null;
+            }
+
+            return toByteCodeArray;
         } catch (Exception e) {
             logger.debug("transform {} error: {},{}", className, e.getClass().getName(), e.getMessage());
             return null;
