@@ -5,12 +5,37 @@
     <parent>
         <artifactId>spy</artifactId>
         <groupId>com.jvmbytes.spy</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>spy-injector</artifactId>
     <packaging>jar</packaging>
+    <name>jvmbytes spy injector</name>
+    <description>jvmbytes spy injector</description>
+    <url>https://github.com/jvmbytes/spy/tree/master/spy-injector</url>
+
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE</name>
+            <url>https://www.gnu.org/licenses/</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>wongoo</name>
+            <email>wongoo@apache.org</email>
+            <organization>jvmbytes</organization>
+            <organizationUrl>http://jvmbytes.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/jvmbytes/spy.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jvmbytes/spy.git</developerConnection>
+        <url>https://github.com/jvmbytes/spy/tree/master/spy-injector</url>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -21,14 +46,13 @@
         <dependency>
             <groupId>com.jvmbytes.spy</groupId>
             <artifactId>spy-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.jvmbytes</groupId>
             <artifactId>filter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
-
 
 </project>

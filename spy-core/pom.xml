@@ -5,22 +5,47 @@
     <parent>
         <artifactId>spy</artifactId>
         <groupId>com.jvmbytes.spy</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>spy-core</artifactId>
+    <name>jvmbytes spy core</name>
+    <description>jvmbytes spy core</description>
+    <url>https://github.com/jvmbytes/spy/tree/master/spy-core</url>
+
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE</name>
+            <url>https://www.gnu.org/licenses/</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>wongoo</name>
+            <email>wongoo@apache.org</email>
+            <organization>jvmbytes</organization>
+            <organizationUrl>http://jvmbytes.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/jvmbytes/spy.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jvmbytes/spy.git</developerConnection>
+        <url>https://github.com/jvmbytes/spy/tree/master/spy-core</url>
+    </scm>
 
     <dependencies>
         <dependency>
             <groupId>com.jvmbytes.commons</groupId>
             <artifactId>structure</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.jvmbytes.spy</groupId>
             <artifactId>spy-hook</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
