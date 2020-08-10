@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spy</artifactId>
+        <groupId>com.jvmbytes.spy</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.jvmbytes.spy.plugin</groupId>
+    <artifactId>spy-plugin-dependencies</artifactId>
+    <packaging>pom</packaging>
+    <description>jvmbytes spy plugin dependencies</description>
+    <url>https://github.com/jvmbytes/spy/tree/master/spy-plugin-dependencies</url>
+
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE</name>
+            <url>https://www.gnu.org/licenses/</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>wongoo</name>
+            <email>wongoo@apache.org</email>
+            <organization>jvmbytes</organization>
+            <organizationUrl>http://jvmbytes.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/jvmbytes/spy.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jvmbytes/spy.git</developerConnection>
+        <url>https://github.com/jvmbytes/spy/tree/master/spy</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.jvmbytes.spy.plugin</groupId>
+            <artifactId>spy-plugin</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kohsuke.metainf-services</groupId>
+            <artifactId>metainf-services</artifactId>
+            <version>1.8</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.jvmbytes.spy</groupId>
+                <artifactId>spy-core</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvmbytes.spy</groupId>
+                <artifactId>spy-hook</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvmbytes.spy</groupId>
+                <artifactId>spy-injector</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludeGroupIds>org.kohsuke,com.jvmbytes,org.ow2,org.slf4j,commons-io,org.apache.commons</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>package</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <move todir="${build.outputDirectory}/${project.groupId}@${project.artifactId}"
+                                      failonerror="false">
+                                    <fileset dir="${build.outputDirectory}/">
+                                        <exclude name="${project.groupId}@${project.artifactId}"/>
+                                    </fileset>
+                                    <fileset dir="${build.directory}/dependency/"/>
+                                </move>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

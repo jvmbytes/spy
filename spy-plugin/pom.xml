@@ -9,10 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spy-classloader</artifactId>
-    <name>jvmbytes spy classloader</name>
-    <description>jvmbytes spy classloader</description>
-    <url>https://github.com/jvmbytes/spy/tree/master/spy-classloader</url>
+    <groupId>com.jvmbytes.spy.plugin</groupId>
+    <artifactId>spy-plugin</artifactId>
+    <name>jvmbytes spy plugin</name>
+    <description>jvmbytes spy plugin</description>
+    <url>https://github.com/jvmbytes/spy/tree/master/spy-plugin</url>
 
     <licenses>
         <license>
@@ -33,7 +34,20 @@
     <scm>
         <connection>scm:git:git://github.com/jvmbytes/spy.git</connection>
         <developerConnection>scm:git:ssh://github.com:jvmbytes/spy.git</developerConnection>
-        <url>https://github.com/jvmbytes/spy/tree/master/spy-classloader</url>
+        <url>https://github.com/jvmbytes/spy/tree/master/spy</url>
     </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.jvmbytes.spy</groupId>
+            <artifactId>spy-injector</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jvmbytes</groupId>
+            <artifactId>filter</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
 
 </project>

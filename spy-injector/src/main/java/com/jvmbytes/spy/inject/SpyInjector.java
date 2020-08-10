@@ -44,11 +44,19 @@ public final class SpyInjector {
         SpyInjector.classDataSource = new ClassDataSource(inst, true);
     }
 
-    public static int inject(Matcher matcher, EventType[] types, EventListener listener) {
+    private static void checkInst() throws Exception {
+        if (inst == null) {
+            throw new Exception("Instrumentation not initialized");
+        }
+    }
+
+    public static int inject(Matcher matcher, EventType[] types, EventListener listener) throws Exception {
         return inject(DEFAULT_NAMESPACE, matcher, types, listener);
     }
 
-    public static int inject(String namespace, Matcher matcher, EventType[] types, EventListener listener) {
+    public static int inject(String namespace, Matcher matcher, EventType[] types, EventListener listener) throws Exception {
+        checkInst();
+
         SpyUtils.init(namespace);
 
         SpyTransformer transformer = new SpyTransformer(namespace, matcher, types, listener);
@@ -64,7 +72,9 @@ public final class SpyInjector {
         return transformer.getListenerId();
     }
 
-    public static void remove(int id) {
+    public static void remove(int id) throws Exception {
+        checkInst();
+
         SpyTransformer transformer = transformers.remove(id);
         if (transformer != null) {
             inst.removeTransformer(transformer);

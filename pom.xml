@@ -8,9 +8,10 @@
     <version>1.0.0</version>
     <modules>
         <module>spy-hook</module>
-        <module>spy-classloader</module>
+        <module>spy-plugin</module>
         <module>spy-core</module>
         <module>spy-injector</module>
+        <module>spy-plugin-dependencies</module>
     </modules>
 
     <name>jvmbytes spy</name>
