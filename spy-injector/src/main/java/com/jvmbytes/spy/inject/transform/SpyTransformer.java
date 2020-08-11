@@ -4,6 +4,7 @@ import com.jvmbytes.commons.structure.ClassStructure;
 import com.jvmbytes.commons.structure.ClassStructureFactory;
 import com.jvmbytes.filter.matcher.Matcher;
 import com.jvmbytes.filter.matcher.MatchingResult;
+import com.jvmbytes.filter.matcher.UnsupportedMatcher;
 import com.jvmbytes.spy.enhance.EventEnhancer;
 import com.jvmbytes.spy.event.EventType;
 import com.jvmbytes.spy.listener.EventListener;
@@ -56,7 +57,8 @@ public class SpyTransformer implements ClassFileTransformer {
                             ProtectionDomain protectionDomain,
                             byte[] classfileBuffer) throws IllegalClassFormatException {
         try {
-            if (className.startsWith("com/jvmbytes/")) {
+            if (UnsupportedMatcher.isUnsupportedClass(className.replace("/", "."))
+                    || UnsupportedMatcher.isFromStealthClassLoader(loader, false)) {
                 return null;
             }
 
@@ -64,9 +66,9 @@ public class SpyTransformer implements ClassFileTransformer {
                     ? ClassStructureFactory.createClassStructure(classfileBuffer, loader)
                     : ClassStructureFactory.createClassStructure(classBeingRedefined);
 
-            MatchingResult matchingResult = matcher.matching(classStructure);
+            MatchingResult matchingResult = matcher.matching(classStructure, true);
 
-            if (!matchingResult.isMatched()) {
+            if (matchingResult ==null || !matchingResult.isMatched()) {
                 return null;
             }
 
