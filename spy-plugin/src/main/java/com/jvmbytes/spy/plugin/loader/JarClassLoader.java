@@ -1,6 +1,7 @@
 package com.jvmbytes.spy.plugin.loader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -29,5 +30,11 @@ public class JarClassLoader extends AbstractPluginClassLoader {
         return readBytes(jarFile.getInputStream(entry));
     }
 
-
+    @Override
+    public void close() throws IOException {
+        if (jarFile != null) {
+            jarFile.close();
+            jarFile = null;
+        }
+    }
 }

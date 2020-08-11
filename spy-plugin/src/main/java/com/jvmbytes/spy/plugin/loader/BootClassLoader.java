@@ -1,6 +1,7 @@
 package com.jvmbytes.spy.plugin.loader;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -24,6 +25,17 @@ public class BootClassLoader extends AbstractPluginClassLoader {
      * the jar file where class files contains in
      */
     private final Object libJarFile;
+
+    @Override
+    public void close() throws IOException {
+        if (libJarFile != null) {
+            try {
+                Method closeMethod = libJarFile.getClass().getMethod("close");
+                closeMethod.invoke(libJarFile);
+            } catch (Exception ignored) {
+            }
+        }
+    }
 
     public BootClassLoader(ClassLoader parent, String bootJarPath, String libJarPath, String prefix) throws Exception {
         super(parent, prefix);

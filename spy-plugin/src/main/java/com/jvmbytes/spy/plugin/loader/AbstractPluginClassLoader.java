@@ -2,6 +2,7 @@ package com.jvmbytes.spy.plugin.loader;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -10,7 +11,7 @@ import java.util.Enumeration;
 /**
  * @author wongoo
  */
-public abstract class AbstractPluginClassLoader extends ClassLoader {
+public abstract class AbstractPluginClassLoader extends ClassLoader implements Closeable {
     /**
      * file path prefix
      */
@@ -23,6 +24,10 @@ public abstract class AbstractPluginClassLoader extends ClassLoader {
     public AbstractPluginClassLoader(ClassLoader parent, String prefix) {
         super(parent);
         this.prefix = prefix;
+    }
+
+    @Override
+    public void close() throws IOException {
     }
 
     @Override
