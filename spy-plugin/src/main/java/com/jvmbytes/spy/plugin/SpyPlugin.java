@@ -44,4 +44,11 @@ public interface SpyPlugin {
      * @return event listener
      */
     EventListener getEventListener();
+
+    /**
+     * get the prefixes of packages which should be loaded from parent class loader
+     *
+     * @return prefixes
+     */
+    String[] getParentPackagePrefixes();
 }

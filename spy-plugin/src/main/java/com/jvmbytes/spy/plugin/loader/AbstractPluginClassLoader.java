@@ -17,13 +17,23 @@ public abstract class AbstractPluginClassLoader extends ClassLoader implements C
      */
     private String prefix;
 
+    /**
+     * the prefixes of packages which are allowed to load from parent class loader
+     */
+    private String[] parentPackagePrefixes;
+
     public String getPrefix() {
         return prefix;
     }
 
-    public AbstractPluginClassLoader(ClassLoader parent, String prefix) {
+    public void setParentPackagePrefixes(String[] parentPackagePrefixes) {
+        this.parentPackagePrefixes = parentPackagePrefixes;
+    }
+
+    public AbstractPluginClassLoader(ClassLoader parent, String prefix, String[] parentPackagePrefixes) {
         super(parent);
         this.prefix = prefix;
+        this.parentPackagePrefixes = parentPackagePrefixes;
     }
 
     @Override
@@ -38,6 +48,33 @@ public abstract class AbstractPluginClassLoader extends ClassLoader implements C
     @Override
     protected Enumeration<URL> findResources(String name) throws IOException {
         return getParent().getResources(prefix + name);
+    }
+
+    @Override
+    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+        if (parentPackagePrefixes != null) {
+            for (String packagePrefix : parentPackagePrefixes) {
+                if (name.startsWith(packagePrefix)) {
+                    try {
+                        return getParent().loadClass(name);
+                    } catch (Throwable ignore) {
+                        // 父类找不到则继续当前类加载器查找
+                    }
+                }
+            }
+        }
+
+        // First, check if the class has already been loaded
+        Class<?> c = findLoadedClass(name);
+        if (c != null) {
+            return c;
+        }
+
+        Class<?> aClass = findClass(name);
+        if (resolve) {
+            resolveClass(aClass);
+        }
+        return aClass;
     }
 
     @Override

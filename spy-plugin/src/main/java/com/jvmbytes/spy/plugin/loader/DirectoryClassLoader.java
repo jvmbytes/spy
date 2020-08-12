@@ -8,8 +8,8 @@ import java.net.URL;
  */
 public class DirectoryClassLoader extends AbstractPluginClassLoader {
 
-    public DirectoryClassLoader(ClassLoader parent, String prefix) {
-        super(parent, prefix);
+    public DirectoryClassLoader(ClassLoader parent, String prefix, String[] parentPackagePrefixes) {
+        super(parent, prefix, parentPackagePrefixes);
     }
 
     @Override

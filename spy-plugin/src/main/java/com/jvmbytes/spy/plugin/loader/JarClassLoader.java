@@ -15,8 +15,8 @@ public class JarClassLoader extends AbstractPluginClassLoader {
      */
     private JarFile jarFile;
 
-    public JarClassLoader(ClassLoader parent, String jarPath, String prefix) throws Exception {
-        super(parent, prefix);
+    public JarClassLoader(ClassLoader parent, String jarPath, String prefix, String[] parentPackagePrefixes) throws Exception {
+        super(parent, prefix, parentPackagePrefixes);
         this.jarFile = new JarFile(new File(jarPath));
     }
 

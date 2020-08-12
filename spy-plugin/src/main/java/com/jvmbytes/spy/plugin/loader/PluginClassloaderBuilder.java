@@ -10,7 +10,7 @@ public class PluginClassloaderBuilder {
     private static final String JAR_FILE_SEPARATOR = "!" + JAR_PATH_SEPARATOR;
     private static final String FILE_FLAG_PREFIX = "file:";
 
-    public static ClassLoader build(String key) throws Exception {
+    public static AbstractPluginClassLoader build(String key) throws Exception {
         String dir = "/" + key;
         URL url = PluginClassloaderBuilder.class.getResource(dir);
         if (url == null) {
@@ -24,7 +24,7 @@ public class PluginClassloaderBuilder {
 
         int jarIndex = path.lastIndexOf(JAR_FILE_SEPARATOR);
         if (jarIndex == -1) {
-            return new DirectoryClassLoader(parent, key + JAR_PATH_SEPARATOR);
+            return new DirectoryClassLoader(parent, key + JAR_PATH_SEPARATOR, null);
         }
 
         String prefix = path.substring(jarIndex + JAR_FILE_SEPARATOR.length());
@@ -36,12 +36,12 @@ public class PluginClassloaderBuilder {
 
         jarIndex = path.lastIndexOf(JAR_FILE_SEPARATOR);
         if (jarIndex == -1) {
-            return new JarClassLoader(parent, path, prefix);
+            return new JarClassLoader(parent, path, prefix, null);
         }
 
         String libPath = path.substring(jarIndex + JAR_FILE_SEPARATOR.length());
         path = path.substring(0, jarIndex);
 
-        return new BootClassLoader(parent, path, libPath, prefix);
+        return new BootClassLoader(parent, path, libPath, prefix, null);
     }
 }

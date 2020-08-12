@@ -37,8 +37,8 @@ public class BootClassLoader extends AbstractPluginClassLoader {
         }
     }
 
-    public BootClassLoader(ClassLoader parent, String bootJarPath, String libJarPath, String prefix) throws Exception {
-        super(parent, prefix);
+    public BootClassLoader(ClassLoader parent, String bootJarPath, String libJarPath, String prefix, String[] parentPackagePrefixes) throws Exception {
+        super(parent, prefix, parentPackagePrefixes);
         if (bootJarFile == null) {
             Class<?> jarFileClass = Class.forName("org.springframework.boot.loader.jar.JarFile");
             Constructor<?> constructor = jarFileClass.getConstructor(File.class);

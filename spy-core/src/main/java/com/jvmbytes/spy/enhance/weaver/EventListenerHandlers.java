@@ -1,5 +1,6 @@
 package com.jvmbytes.spy.enhance.weaver;
 
+import com.jvmbytes.commons.utils.StringUtils;
 import com.jvmbytes.spy.ProcessControlException;
 import com.jvmbytes.spy.Spy;
 import com.jvmbytes.spy.State;
@@ -17,10 +18,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.jvmbytes.commons.utils.ArrayUtils.contains;
+import static com.jvmbytes.commons.utils.StringUtils.join;
 import static com.jvmbytes.spy.Spy.Ret.newInstanceForNone;
 import static com.jvmbytes.spy.enhance.weaver.EventProcessor.isInterruptEventHandler;
-import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.apache.commons.lang3.StringUtils.join;
 
 /**
  * 事件处理

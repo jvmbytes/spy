@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.jvmbytes.commons.utils.ArrayUtils.contains;
 import static com.jvmbytes.commons.utils.ClassUtils.toJavaClassName;
-import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.apache.commons.lang3.StringUtils.join;
+import static com.jvmbytes.commons.utils.StringUtils.join;
 
 
 /**

@@ -1,21 +1,20 @@
 package com.jvmbytes.spy.plugin;
 
 import com.jvmbytes.spy.inject.SpyInjector;
+import com.jvmbytes.spy.plugin.loader.AbstractPluginClassLoader;
 import com.jvmbytes.spy.plugin.loader.PluginClassloaderBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
-import java.lang.reflect.Field;
-import java.net.URLClassLoader;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.jar.JarFile;
 
 /**
  * @author wongoo
@@ -23,6 +22,14 @@ import java.util.jar.JarFile;
 public final class PluginLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(PluginLoader.class);
+
+    private static final String[] defaultParentPackagePrefix = new String[]{
+            "java.",
+            "javax.",
+            "com.jvmbytes.",
+            "org.ow2",
+            "org.slf4j"
+    };
 
     private static final Map<String, Map<String, Integer>> PLUGIN_LISTEN_IDS =
             new ConcurrentHashMap<String, Map<String, Integer>>(32);
@@ -51,14 +58,24 @@ public final class PluginLoader {
                 logger.debug("{} already loaded", key);
                 return;
             }
-            ClassLoader classLoader = PluginClassloaderBuilder.build(key);
+            AbstractPluginClassLoader classLoader = PluginClassloaderBuilder.build(key);
+            classLoader.setParentPackagePrefixes(defaultParentPackagePrefix);
+
             Iterator<SpyPlugin> plugins = ServiceLoader.load(SpyPlugin.class, classLoader).iterator();
             Map<String, Integer> ids = new HashMap<String, Integer>(8);
             PLUGIN_LISTEN_IDS.put(key, ids);
             PLUGIN_CLASS_LOADERS.put(key, classLoader);
 
+            HashSet<String> allowPackages = new HashSet<String>(8);
+            allowPackages.addAll(Arrays.asList(defaultParentPackagePrefix));
+
             while (plugins.hasNext()) {
                 SpyPlugin plugin = plugins.next();
+
+                if (plugin.getParentPackagePrefixes() != null) {
+                    allowPackages.addAll(Arrays.asList(plugin.getParentPackagePrefixes()));
+                    classLoader.setParentPackagePrefixes(allowPackages.toArray(new String[0]));
+                }
 
                 String namespace = plugin.getNamespace();
                 if (namespace == null) {
@@ -119,30 +136,6 @@ public final class PluginLoader {
             }
             return;
         }
-
-        // 对于JDK6的版本，URLClassLoader要关闭起来就显得有点麻烦，这里弄了一大段代码来稍微处理下
-        // 而且还不能保证一定释放干净了，至少释放JAR文件句柄是没有什么问题了
-        try {
-            final Object sunMiscURLClassPath = forceGetDeclaredFieldValue(URLClassLoader.class, "ucp", classLoader);
-            final Object javaUtilCollection = forceGetDeclaredFieldValue(sunMiscURLClassPath.getClass(), "loaders", sunMiscURLClassPath);
-
-            for (final Object sunMiscURLClassPathJarLoader : ((Collection) javaUtilCollection).toArray()) {
-                try {
-                    final JarFile javaUtilJarJarFile = forceGetDeclaredFieldValue(sunMiscURLClassPathJarLoader.getClass(), "jar", sunMiscURLClassPathJarLoader);
-                    javaUtilJarJarFile.close();
-                } catch (Throwable t) {
-                    // if we got this far, this is probably not a JAR loader so skip it
-                }
-            }
-        } catch (Throwable cause) {
-            // ignore...
-        }
-
     }
 
-    private static <T> T forceGetDeclaredFieldValue(Class<?> clazz, String name, Object target) throws NoSuchFieldException, IllegalAccessException {
-        final Field field = clazz.getDeclaredField(name);
-        field.setAccessible(true);
-        return (T) field.get(target);
-    }
 }

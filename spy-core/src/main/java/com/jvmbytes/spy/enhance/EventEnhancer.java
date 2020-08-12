@@ -1,5 +1,6 @@
 package com.jvmbytes.spy.enhance;
 
+import com.jvmbytes.commons.utils.IOUtils;
 import com.jvmbytes.spy.enhance.weaver.asm.EventWeaver;
 import com.jvmbytes.spy.event.EventType;
 import com.jvmbytes.spy.util.AsmUtils;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES;
 import static org.objectweb.asm.ClassWriter.COMPUTE_FRAMES;
 import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
@@ -77,7 +77,7 @@ public class EventEnhancer implements Enhancer {
 
         // 将类字节码写入文件
         try {
-            writeByteArrayToFile(dumpClassFile, data);
+            IOUtils.writeByteArrayToFile(dumpClassFile, data);
             logger.info("dump {} to {} success.", className, dumpClassFile);
         } catch (IOException e) {
             logger.warn("dump {} to {} failed.", className, dumpClassFile, e);
